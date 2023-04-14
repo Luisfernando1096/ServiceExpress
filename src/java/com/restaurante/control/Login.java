@@ -37,8 +37,9 @@ public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
+        System.out.println("Esto tengo en la variable usuario bd : " + request.getParameter("usuarioBD"));
         if (accion == null) {
-
+            
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } else if (accion.equals("login")) {
             try {
@@ -50,7 +51,8 @@ public class Login extends HttpServlet {
     }
 
     private void iniciarSesion(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-        String pinCode = request.getParameter("clave");
+        String pinCode = request.getParameter("txtPin");
+        request.setAttribute("usuario", request.getParameter("usuarioBD"));
         PrintWriter io = response.getWriter();HttpSession sesion = request.getSession();
         if (pinCode == null) {
             pinCode = "";
@@ -68,8 +70,6 @@ public class Login extends HttpServlet {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             } else {
                 if (!u.isEmpty()) {
-
-// == Integer.parseInt(Hash.generarHash(pinCode, Hash.SHA256))
                     //sesion.setAttribute("Usuario", u.getUsuario());
                     //sesion.setAttribute("Nombres", u.getNombres());
                     //sesion.setAttribute("Apellidos", u.getApellidos());
